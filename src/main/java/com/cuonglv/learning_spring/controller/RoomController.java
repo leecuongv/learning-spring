@@ -21,33 +21,33 @@ import com.cuonglv.learning_spring.service.RoomService;
 @RequestMapping("/api/rooms")
 public class RoomController {
 	@Autowired
-	private RoomService productService;
+	private RoomService roomService;
 
 	@PostMapping
-	public Room createRoom(@RequestBody Room product) {
-		return productService.createRoom(product);
+	public Room createRoom(@RequestBody Room room) {
+		return roomService.createRoom(room);
 	}
 
 	@GetMapping
 	public List<Room> getAllRooms() {
-		return productService.getAllRooms();
+		return roomService.getAllRooms();
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Room> getRoomById(@PathVariable String id) {
-		Optional<Room> product = productService.getRoomById(id);
-		return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+		Optional<Room> room = roomService.getRoomById(id);
+		return room.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Room> updateRoom(@PathVariable String id, @RequestBody Room productDetails) {
-		Room updatedRoom = productService.updateRoom(id, productDetails);
+	public ResponseEntity<Room> updateRoom(@PathVariable String id, @RequestBody Room roomDetails) {
+		Room updatedRoom = roomService.updateRoom(id, roomDetails);
 		return ResponseEntity.ok(updatedRoom);
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteRoom(@PathVariable String id) {
-		productService.deleteRoom(id);
+		roomService.deleteRoom(id);
 		return ResponseEntity.ok().build();
 	}
 }
