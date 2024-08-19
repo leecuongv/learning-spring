@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.cuonglv.learning_spring.service.CustomUserDetailsService;
-
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -46,7 +46,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
 			if (jwtUtil.validateToken(jwt, userDetails)) {
-				org.springframework.security.authentication.UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
 				usernamePasswordAuthenticationToken
 						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
