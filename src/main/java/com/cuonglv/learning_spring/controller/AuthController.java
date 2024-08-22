@@ -5,8 +5,11 @@ import com.cuonglv.learning_spring.model.AuthResponse;
 import com.cuonglv.learning_spring.model.RegisterRequest;
 import com.cuonglv.learning_spring.repository.RoleRepository;
 import com.cuonglv.learning_spring.repository.UserRepository;
-import com.cuonglv.learning_spring.service.CustomUserDetailsService;
+import com.cuonglv.learning_spring.service.UserService;
+import com.cuonglv.learning_spring.utility.model.msg.response.ResponseMessage;
+import com.cuonglv.learning_spring.utility.response.handler.ResponseHandler;
 import com.cuonglv.learning_spring.security.JwtUtil;
+import com.cuonglv.learning_spring.context.RequestContext;
 import com.cuonglv.learning_spring.data.Role;
 import com.cuonglv.learning_spring.data.User;
 
@@ -17,10 +20,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.UUID;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.inject.Inject;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -30,7 +35,7 @@ public class AuthController {
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
-	private CustomUserDetailsService userDetailsService;
+	private UserService userDetailsService;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -44,24 +49,29 @@ public class AuthController {
 	@Autowired
 	private JwtUtil jwtUtil;
 
+	@Inject
+	RequestContext requestContext;
+
+	@Autowired
+	ResponseHandler responseHandler;
+
+	public static final String REQUEST_ID = UUID.randomUUID().toString();
+
 	@PostMapping("/login")
-	public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
+	public ResponseMessage<?> login(@RequestBody AuthRequest authRequest) {
 		authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
-		System.err.println("UserDetails: ");
-		System.out.println(userDetails);
 		final String token = jwtUtil.generateToken(userDetails);
-
-		return ResponseEntity.ok(new AuthResponse(token));
+		return responseHandler.generateResponseMessage(token, REQUEST_ID);
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+	public ResponseMessage<?> register(@RequestBody RegisterRequest registerRequest) {
 		Optional<User> existingUser = userRepository.findByUsername(registerRequest.getUsername());
 		if (existingUser.isPresent()) {
-			return ResponseEntity.badRequest().body("Username is already taken.");
+			return responseHandler.generateResponseMessage(new Exception("Username is already taken."), "requestId");
 		}
 
 		// Mã hóa mật khẩu
@@ -88,7 +98,7 @@ public class AuthController {
 
 		// Lưu user vào MongoDB
 		userRepository.save(newUser);
-
-		return ResponseEntity.ok("User registered successfully.");
+		return responseHandler.generateResponseMessage("User registered successfully.", REQUEST_ID);
 	}
+
 }

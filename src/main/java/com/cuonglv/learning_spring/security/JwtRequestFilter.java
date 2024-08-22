@@ -7,7 +7,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.cuonglv.learning_spring.service.CustomUserDetailsService;
+import com.cuonglv.learning_spring.service.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,7 +19,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private CustomUserDetailsService userDetailsService;
+	private UserService userDetailsService;
 
 	@Autowired
 	private JwtUtil jwtUtil;
