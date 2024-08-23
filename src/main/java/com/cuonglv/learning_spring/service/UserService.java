@@ -35,12 +35,6 @@ public class UserService implements UserDetailsService {
 		try {
 			User user = userRepository.findByUsername(username)
 					.orElseThrow(() -> new RuntimeException("User not found"));
-			// if (updatedUser.getUsername() != null) {
-			// user.setUsername(updatedUser.getUsername());
-			// }
-			// if (updatedUser.getPassword() != null) {
-			// user.setPassword(updatedUser.getPassword());
-			// }
 			if (updatedUser.getEmail() != null) {
 				user.setEmail(updatedUser.getEmail());
 			}
