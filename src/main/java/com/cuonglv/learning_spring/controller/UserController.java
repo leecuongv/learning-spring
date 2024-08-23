@@ -1,5 +1,8 @@
 package com.cuonglv.learning_spring.controller;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,10 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cuonglv.learning_spring.context.RequestContext;
 import com.cuonglv.learning_spring.data.User;
 import com.cuonglv.learning_spring.security.JwtUtil;
 import com.cuonglv.learning_spring.service.UserService;
 import com.cuonglv.learning_spring.utility.model.msg.response.ResponseMessage;
+import com.cuonglv.learning_spring.utility.response.handler.ResponseHandler;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,41 +38,72 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private JwtUtil jwtUtil;
+	@Inject
+	RequestContext requestContext;
+
+	@Autowired
+	ResponseHandler responseHandler;
+	Gson gson = new Gson();
 
 	@GetMapping("/me")
-	public UserDetails getAuthenticatedUser() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
+	public ResponseMessage<?> getAuthenticatedUser() throws Exception {
 
-		return userDetailsService.loadUserByUsername(username);
+		ResponseMessage<?> responseMessage = null;
+		try {
+
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String username = authentication.getName();
+			UserDetails userDetail = userDetailsService.loadUserByUsername(username);
+			JsonObject user = new JsonObject();
+			user.addProperty("username", userDetail.getUsername());
+			user.addProperty("email", userDetail.getUsername());
+			user.addProperty("roles", userDetail.getAuthorities().toString());
+
+			responseMessage = responseHandler.generateResponseMessage(user, requestContext.getRequestId());
+		} catch (Exception e) {
+			responseMessage = responseHandler.generateResponseMessage(e, requestContext.getRequestId());
+		}
+		return responseMessage;
+
 	}
-
-	// public ResponseMessage<?> getAuthenticatedUser() {
-	// Authentication authentication =
-	// SecurityContextHolder.getContext().getAuthentication();
-	// String username = authentication.getName();
-
-	// return userDetailsService.loadUserByUsername(username);
-	// }
 
 	// update user
 	@PutMapping("/me")
-	public UserDetails updateUser(@RequestBody UserDetails user) {
+	public ResponseMessage<?> updateUser(@RequestBody JsonObject jsonObject) {
+		ResponseMessage<?> responseMessage = null;
+		try {
+
+			User user = gson.fromJson(jsonObject, User.class);
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String username = authentication.getName();
+			User updatedUser = userService.updateUser(username, user);
+			responseMessage = responseHandler.generateResponseMessage(updatedUser, requestContext.getRequestId());
+		} catch (Exception e) {
+			responseMessage = responseHandler.generateResponseMessage(e, requestContext.getRequestId());
+		}
+
+		return responseMessage;
+	}
+
+	@DeleteMapping("/me")
+	public ResponseMessage<?> deleteUser() {
+		ResponseMessage<?> responseMessage = null;
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String username = authentication.getName();
+			userService.deleteUser(username);
+			responseMessage = responseHandler.generateResponseMessage("User deleted successfully",
+					requestContext.getRequestId());
+		} catch (Exception e) {
+			responseMessage = responseHandler.generateResponseMessage(e, requestContext.getRequestId());
+		}
+
+		return responseMessage;
+	}
+
+	public String getUsername(HttpServletRequest request) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
-
-		return userDetailsService.loadUserByUsername(username);
-	}
-
-	@PutMapping("/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User user) {
-		User updatedUser = userService.updateUser(id, user);
-		return ResponseEntity.ok(updatedUser);
-	}
-
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteUser(@PathVariable String id) {
-		userService.deleteUser(id);
-		return ResponseEntity.noContent().build();
+		return username;
 	}
 }

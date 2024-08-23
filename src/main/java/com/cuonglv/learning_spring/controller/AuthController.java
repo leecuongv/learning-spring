@@ -58,13 +58,18 @@ public class AuthController {
 	public static final String REQUEST_ID = UUID.randomUUID().toString();
 
 	@PostMapping("/login")
-	public ResponseMessage<?> login(@RequestBody AuthRequest authRequest) {
-		authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+	public ResponseMessage<?> login(@RequestBody AuthRequest authRequest) throws Exception {
+		try {
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
-		final String token = jwtUtil.generateToken(userDetails);
-		return responseHandler.generateResponseMessage(token, REQUEST_ID);
+			final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
+			final String token = jwtUtil.generateToken(userDetails);
+			return responseHandler.generateResponseMessage(token, REQUEST_ID);
+		} catch (Exception e) {
+			return responseHandler.generateResponseMessage(e, REQUEST_ID);
+		}
+
 	}
 
 	@PostMapping("/register")

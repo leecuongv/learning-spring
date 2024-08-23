@@ -166,8 +166,6 @@ public class GsonHelper {
 						// Handle other types as needed
 						mergedObject.add("value", dataValue);
 					}
-
-					// Add the merged object to the merged array
 					mergedArray.add(mergedObject);
 					break; // Move to the next schema key
 				}
@@ -213,5 +211,14 @@ public class GsonHelper {
 				return false;
 			}
 		}
+	}
+
+	public static JsonObject convertToJsObject(Object object) throws Exception {
+		try {
+			return new Gson().fromJson(new Gson().toJson(object), JsonObject.class);
+		} catch (Exception e) {
+			throw new Exception("Can't convert object to JsonObject " + e.getMessage());
+		}
+
 	}
 }
