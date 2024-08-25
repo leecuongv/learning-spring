@@ -92,10 +92,12 @@ public class TextInfo {
 	public static ArrayList<TextInfo> findThePositionsOfTheCharactersInTheMarkingString(String pathPDF, String text)
 			throws IOException {
 		ArrayList<TextInfo> infoTextDynamicArr = new ArrayList<>();
-
+		PdfReader reader = null;
+		PdfDocument pdfDoc = null;
 		try {
-			PdfReader reader = new PdfReader(pathPDF);
-			PdfDocument pdfDoc = new PdfDocument(reader);
+
+			reader = new PdfReader(pathPDF);
+			pdfDoc = new PdfDocument(reader);
 			for (int i = 1; i <= pdfDoc.getNumberOfPages(); i++) {
 				TextMarginFinder listener = new TextMarginFinder();
 				new PdfCanvasProcessor(listener).processPageContent(pdfDoc.getPage(i));
@@ -105,7 +107,13 @@ public class TextInfo {
 			return infoTextDynamicArr;
 		} catch (IOException e) {
 			throw e;
+		} finally {
+			if (pdfDoc != null)
+				pdfDoc.close();
+			if (reader != null)
+				reader.close();
 		}
+
 	}
 
 	private static List<TextInfo> findPositionsInPage(List<TextInfo> position, String text, int page) {
@@ -133,7 +141,6 @@ public class TextInfo {
 		ArrayList<TextInfo> infoTextDynamicArr = new ArrayList<>();
 
 		try {
-			// System.out.println(pathPDF.available());
 			PdfReader reader = new PdfReader(pathPDF);
 			PdfDocument pdfDoc = new PdfDocument(reader);
 			try {
@@ -160,13 +167,13 @@ public class TextInfo {
 			} catch (Exception e) {
 				throw e;
 			} finally {
-				pdfDoc.close();
-				reader.close();
+				if (pdfDoc != null)
+					pdfDoc.close();
+				if (reader != null)
+					reader.close();
 			}
 		} catch (Exception e) {
 			throw e;
-		} finally {
-
 		}
 		return infoTextDynamicArr;
 	}
@@ -279,7 +286,7 @@ public class TextInfo {
 
 	public static float calculateAverageXDifference(List<TextInfo> numbers) {
 		if (numbers == null || numbers.isEmpty()) {
-			throw new NullPointerException("List is empty or null");
+			throw new NullPointerException("List X is empty or null");
 		}
 
 		float sum = 0;
@@ -300,7 +307,7 @@ public class TextInfo {
 
 	public static float calculateAverageYDifference(List<TextInfo> numbers) {
 		if (numbers == null || numbers.isEmpty()) {
-			throw new NullPointerException("List is empty or null");
+			throw new NullPointerException("List Y is empty or null");
 		}
 
 		float sum = 0;
@@ -337,7 +344,7 @@ public class TextInfo {
 		List<TextInfo> result = new ArrayList<>();
 		double yMax = subArrays.get(0).get(0).getY();
 		if (subArrays.isEmpty()) {
-			throw new NullPointerException("List is empty or null");
+			throw new NullPointerException("List XY is empty or null");
 		}
 		if (subArrays.size() == 1)
 			return subArrays.get(0);
@@ -451,7 +458,7 @@ public class TextInfo {
 	public static TextInfo findSignPosition(String pathPDF, String markedString, String align) throws Exception {
 		ArrayList<TextInfo> dynamicArr = findThePositionsOfTheCharactersInTheMarkingString(pathPDF, markedString);
 		if (dynamicArr.isEmpty()) {
-			throw new NullPointerException("No text found");
+			throw new NullPointerException("No character found");
 		}
 
 		List<List<TextInfo>> subArrays = findThePositionsOfTheMarkingString(dynamicArr, markedString);
@@ -461,7 +468,7 @@ public class TextInfo {
 
 		List<List<TextInfo>> sameLineChar = findCharactersInTheSameRow(subArrays);
 		if (sameLineChar.isEmpty()) {
-			throw new NullPointerException("No text found");
+			throw new NullPointerException("No text in same row found");
 		}
 		List<List<TextInfo>> consecutiveChar = findListOfConsecutiveCharacters(sameLineChar);
 

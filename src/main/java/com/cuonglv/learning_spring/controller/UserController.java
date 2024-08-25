@@ -1,10 +1,8 @@
 package com.cuonglv.learning_spring.controller;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.Authentication;
@@ -25,7 +23,6 @@ import com.google.gson.JsonObject;
 
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/user")
@@ -50,10 +47,7 @@ public class UserController {
 
 		ResponseMessage<?> responseMessage = null;
 		try {
-
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String username = authentication.getName();
-			UserDetails userDetail = userDetailsService.loadUserByUsername(username);
+			UserDetails userDetail = userDetailsService.loadUserByUsername(getUsername());
 			JsonObject user = new JsonObject();
 			user.addProperty("username", userDetail.getUsername());
 			user.addProperty("email", userDetail.getUsername());
@@ -74,9 +68,7 @@ public class UserController {
 		try {
 
 			User user = gson.fromJson(jsonObject, User.class);
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String username = authentication.getName();
-			User updatedUser = userService.updateUser(username, user);
+			User updatedUser = userService.updateUser(getUsername(), user);
 			responseMessage = responseHandler.generateResponseMessage(updatedUser, requestContext.getRequestId());
 		} catch (Exception e) {
 			responseMessage = responseHandler.generateResponseMessage(e, requestContext.getRequestId());
@@ -89,9 +81,7 @@ public class UserController {
 	public ResponseMessage<?> deleteUser() {
 		ResponseMessage<?> responseMessage = null;
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String username = authentication.getName();
-			userService.deleteUser(username);
+			userService.deleteUser(getUsername());
 			responseMessage = responseHandler.generateResponseMessage("User deleted successfully",
 					requestContext.getRequestId());
 		} catch (Exception e) {
@@ -101,9 +91,8 @@ public class UserController {
 		return responseMessage;
 	}
 
-	public String getUsername(HttpServletRequest request) {
+	public String getUsername() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
-		return username;
+		return authentication.getName();
 	}
 }

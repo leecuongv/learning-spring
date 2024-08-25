@@ -3,7 +3,6 @@ package com.cuonglv.learning_spring.utility.response.handler;
 import java.util.Date;
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -53,8 +52,6 @@ public class ResponseHandler {
 	}
 
 	public ResponseMessage<?> generateResponseMessage(ServiceException ex, String requestId) {
-
-		// System.out.print(ex.getHttpStatus());;
 
 		ResponseMessage<?> responseMessage = null;
 

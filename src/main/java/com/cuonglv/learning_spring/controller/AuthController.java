@@ -1,7 +1,6 @@
 package com.cuonglv.learning_spring.controller;
 
 import com.cuonglv.learning_spring.model.AuthRequest;
-import com.cuonglv.learning_spring.model.AuthResponse;
 import com.cuonglv.learning_spring.model.RegisterRequest;
 import com.cuonglv.learning_spring.repository.RoleRepository;
 import com.cuonglv.learning_spring.repository.UserRepository;
@@ -14,7 +13,6 @@ import com.cuonglv.learning_spring.data.Role;
 import com.cuonglv.learning_spring.data.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
