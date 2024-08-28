@@ -7,6 +7,7 @@ import com.cuonglv.learning_spring.repository.UserRepository;
 import com.cuonglv.learning_spring.service.UserService;
 import com.cuonglv.learning_spring.utility.model.msg.response.ResponseMessage;
 import com.cuonglv.learning_spring.utility.response.handler.ResponseHandler;
+import com.google.gson.JsonObject;
 import com.cuonglv.learning_spring.security.JwtUtil;
 import com.cuonglv.learning_spring.context.RequestContext;
 import com.cuonglv.learning_spring.data.Role;
@@ -63,7 +64,9 @@ public class AuthController {
 
 			final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
 			final String token = jwtUtil.generateToken(userDetails);
-			return responseHandler.generateResponseMessage(token, REQUEST_ID);
+			JsonObject res = new JsonObject();
+			res.addProperty("token", token);
+			return responseHandler.generateResponseMessage(res, REQUEST_ID);
 		} catch (Exception e) {
 			return responseHandler.generateResponseMessage(e, REQUEST_ID);
 		}
@@ -102,6 +105,24 @@ public class AuthController {
 		// Lưu user vào MongoDB
 		userRepository.save(newUser);
 		return responseHandler.generateResponseMessage("User registered successfully.", REQUEST_ID);
+	}
+
+	// Create api to change password
+	@PutMapping("/change-password")
+	public ResponseMessage<?> changePassword(@RequestBody AuthRequest authRequest) {
+		Optional<User> existingUser = userRepository.findByUsername(authRequest.getUsername());
+		if (!existingUser.isPresent()) {
+			return responseHandler.generateResponseMessage(new Exception("User not found."), REQUEST_ID);
+		}
+
+		// Mã hóa mật khẩu
+		String encodedPassword = passwordEncoder.encode(authRequest.getPassword());
+
+		// Cập nhật mật khẩu mới
+		User user = existingUser.get();
+		user.setPassword(encodedPassword);
+		userRepository.save(user);
+		return responseHandler.generateResponseMessage("Password changed successfully.", REQUEST_ID);
 	}
 
 }
