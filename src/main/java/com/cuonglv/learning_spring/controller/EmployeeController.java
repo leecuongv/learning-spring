@@ -1,10 +1,20 @@
 package com.cuonglv.learning_spring.controller;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.inject.Inject;
+
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cuonglv.learning_spring.utility.model.msg.response.ResponseMessage;
+import com.cuonglv.learning_spring.utility.response.handler.ResponseHandler;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,25 +22,51 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.cuonglv.learning_spring.context.RequestContext;
+import com.cuonglv.learning_spring.data.Role;
 import com.cuonglv.learning_spring.data.User;
+import com.cuonglv.learning_spring.model.RegisterRequest;
+import com.cuonglv.learning_spring.repository.RoleRepository;
+import com.cuonglv.learning_spring.repository.UserRepository;
+import com.cuonglv.learning_spring.security.JwtUtil;
+import com.cuonglv.learning_spring.service.UserService;
+import com.cuonglv.learning_spring.utility.helper.GsonHelper;
+import com.google.gson.JsonObject;
 
 @RestController
 @RequestMapping("/api/employee")
 public class EmployeeController {
-    // Create api to get employee info
-    // Create api to update employee info
-    // Create api to delete employee
-    // Create api to create employee
-    // Create api to get all employee
-    // Create api to get employee by id
-    // Create api to get employee by name
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserService userDetailsService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Inject
+    RequestContext requestContext;
+
+    @Autowired
+    ResponseHandler responseHandler;
 
     @GetMapping("/info")
-    public ResponseMessage<?> getEmployeeInfo() throws Exception {
+    public ResponseMessage<?> getEmployeeInfo(@RequestBody JsonObject req) throws Exception {
         ResponseMessage<?> responseMessage = null;
         try {
-            UserDetails userDetail = userDetailsService.loadUserByUsername(getUsername());
-            User user = userService.getUserByUsername(userDetail.getUsername());
+            String username = GsonHelper.getAsString(req, "username");
+            UserDetails userDetail = userDetailsService.loadUserByUsername(username);
+            User user = userDetailsService.getUserByUsername(userDetail.getUsername());
 
             responseMessage = responseHandler.generateResponseMessage(user, requestContext.getRequestId());
         } catch (Exception e) {
@@ -43,7 +79,7 @@ public class EmployeeController {
     public ResponseMessage<?> updateEmployeeInfo(@RequestBody User user) throws Exception {
         ResponseMessage<?> responseMessage = null;
         try {
-            userService.updateUser(user);
+            userDetailsService.updateUser(user.getUsername(), user);
             responseMessage = responseHandler.generateResponseMessage("Update user successfully",
                     requestContext.getRequestId());
         } catch (Exception e) {
@@ -56,7 +92,7 @@ public class EmployeeController {
     public ResponseMessage<?> deleteEmployee(@RequestBody String username) throws Exception {
         ResponseMessage<?> responseMessage = null;
         try {
-            userService.deleteUser(username);
+            userDetailsService.deleteUser(username);
             responseMessage = responseHandler.generateResponseMessage("Delete user successfully",
                     requestContext.getRequestId());
         } catch (Exception e) {
@@ -66,10 +102,27 @@ public class EmployeeController {
     }
 
     @PostMapping("/create")
-    public ResponseMessage<?> createEmployee(@RequestBody User user) throws Exception {
+    public ResponseMessage<?> createEmployee(@RequestBody RegisterRequest registerRequest) throws Exception {
         ResponseMessage<?> responseMessage = null;
         try {
-            userService.createUser(user);
+            String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
+            User newUser = new User();
+            newUser.setUsername(registerRequest.getUsername());
+            newUser.setPassword(encodedPassword);
+
+            // Gán quyền cho user
+            Set<Role> roles = new HashSet<>();
+            Optional<Role> role = roleRepository.findByName(registerRequest.getRole());
+            if (role.isPresent()) {
+                roles.add(role.get());
+            } else {
+                // Tạo quyền mới nếu chưa tồn tại
+                Role newRole = new Role();
+                newRole.setName(registerRequest.getRole());
+                roleRepository.save(newRole);
+                roles.add(newRole);
+            }
+            newUser.setRoles(roles);
             responseMessage = responseHandler.generateResponseMessage("Create user successfully",
                     requestContext.getRequestId());
         } catch (Exception e) {
