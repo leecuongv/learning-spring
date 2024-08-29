@@ -1,6 +1,7 @@
 package com.cuonglv.learning_spring.utility.helper;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -220,5 +221,35 @@ public class GsonHelper {
 			throw new Exception("Can't convert object to JsonObject " + e.getMessage());
 		}
 
+	}
+
+	public static Date getAsDate(JsonObject jo, String key) throws Exception {
+
+		if (!jo.has(key)) {
+			throw new NullPointerException(String.format("Can't find the property '%s' in object.", key));
+		}
+		if (jo.get(key).isJsonNull()) {
+			throw new NullPointerException(String.format("'%s' is null.", key));
+		}
+		if (!jo.get(key).isJsonPrimitive()) {
+			throw new NullPointerException(String.format("'%s' is not an array.", key));
+		}
+		String date = jo.get(key).getAsString();
+		return new Date(date);
+	}
+
+	public static double getAsDouble(JsonObject jo, String key) throws Exception {
+
+		if (!jo.has(key)) {
+			throw new NullPointerException(String.format("Can't find the property '%s' in object.", key));
+		}
+		if (jo.get(key).isJsonNull()) {
+			throw new NullPointerException(String.format("'%s' is null.", key));
+		}
+		if (!jo.get(key).isJsonPrimitive()) {
+			throw new NullPointerException(String.format("'%s' is not an primitve.", key));
+		}
+		Double number = jo.get(key).getAsDouble();
+		return number;
 	}
 }

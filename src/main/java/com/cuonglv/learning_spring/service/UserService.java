@@ -1,6 +1,7 @@
 package com.cuonglv.learning_spring.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,12 +9,15 @@ import org.springframework.stereotype.Service;
 
 import com.cuonglv.learning_spring.data.User;
 import com.cuonglv.learning_spring.repository.UserRepository;
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private MongoTemplate mongoTemplate;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -66,5 +70,11 @@ public class UserService implements UserDetailsService {
 		} catch (Exception e) {
 			throw new RuntimeException("Error deleting user" + e.getMessage());
 		}
+	}
+
+	public List<User> getAllUsers(int page, int size) {
+
+		return userRepository.findAll();
+
 	}
 }

@@ -3,6 +3,7 @@ package com.cuonglv.learning_spring.data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
+import java.util.Date;
 
 @Document
 @Data
@@ -15,7 +16,7 @@ public class Equipment {
     // price of type double
     private String name;
     private String type;
-    private String purchaseDate;
+    private Date purchaseDate;
     private double price;
     private String status;
     private String description;

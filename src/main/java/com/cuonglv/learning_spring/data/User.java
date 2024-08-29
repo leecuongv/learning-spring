@@ -24,4 +24,7 @@ public class User {
 	private String birthday;
 	private String email;
 	private String gender;
+	private String status;
+	private String notes;
+	private double salary;
 }

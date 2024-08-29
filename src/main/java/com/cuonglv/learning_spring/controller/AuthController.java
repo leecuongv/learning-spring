@@ -5,6 +5,7 @@ import com.cuonglv.learning_spring.model.RegisterRequest;
 import com.cuonglv.learning_spring.repository.RoleRepository;
 import com.cuonglv.learning_spring.repository.UserRepository;
 import com.cuonglv.learning_spring.service.UserService;
+import com.cuonglv.learning_spring.utility.exception.ServiceException;
 import com.cuonglv.learning_spring.utility.model.msg.response.ResponseMessage;
 import com.cuonglv.learning_spring.utility.response.handler.ResponseHandler;
 import com.google.gson.JsonObject;
@@ -75,36 +76,41 @@ public class AuthController {
 
 	@PostMapping("/register")
 	public ResponseMessage<?> register(@RequestBody RegisterRequest registerRequest) {
-		Optional<User> existingUser = userRepository.findByUsername(registerRequest.getUsername());
-		if (existingUser.isPresent()) {
-			return responseHandler.generateResponseMessage(new Exception("Username is already taken."), "requestId");
+		try {
+			Optional<User> existingUser = userRepository.findByUsername(registerRequest.getUsername());
+			if (existingUser.isPresent()) {
+				return responseHandler.generateResponseMessage(new Exception("Username is already taken."),
+						"requestId");
+			}
+			// Mã hóa mật khẩu
+			String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
+
+			// Tạo user mới
+			User newUser = new User();
+			newUser.setUsername(registerRequest.getUsername());
+			newUser.setPassword(encodedPassword);
+
+			// Gán quyền cho user
+			Set<Role> roles = new HashSet<>();
+			Optional<Role> role = roleRepository.findByName(registerRequest.getRole());
+			if (role.isPresent()) {
+				roles.add(role.get());
+			} else {
+				// Tạo quyền mới nếu chưa tồn tại
+				Role newRole = new Role();
+				newRole.setName(registerRequest.getRole());
+				roleRepository.save(newRole);
+				roles.add(newRole);
+			}
+			newUser.setRoles(roles);
+
+			// Lưu user vào MongoDB
+			userRepository.save(newUser);
+			return responseHandler.generateResponseMessage(newUser, REQUEST_ID);
+		} catch (Exception e) {
+			return responseHandler.generateResponseMessage(e, REQUEST_ID);
 		}
 
-		// Mã hóa mật khẩu
-		String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
-
-		// Tạo user mới
-		User newUser = new User();
-		newUser.setUsername(registerRequest.getUsername());
-		newUser.setPassword(encodedPassword);
-
-		// Gán quyền cho user
-		Set<Role> roles = new HashSet<>();
-		Optional<Role> role = roleRepository.findByName(registerRequest.getRole());
-		if (role.isPresent()) {
-			roles.add(role.get());
-		} else {
-			// Tạo quyền mới nếu chưa tồn tại
-			Role newRole = new Role();
-			newRole.setName(registerRequest.getRole());
-			roleRepository.save(newRole);
-			roles.add(newRole);
-		}
-		newUser.setRoles(roles);
-
-		// Lưu user vào MongoDB
-		userRepository.save(newUser);
-		return responseHandler.generateResponseMessage("User registered successfully.", REQUEST_ID);
 	}
 
 	// Create api to change password

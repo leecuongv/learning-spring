@@ -48,12 +48,9 @@ public class UserController {
 		ResponseMessage<?> responseMessage = null;
 		try {
 			UserDetails userDetail = userDetailsService.loadUserByUsername(getUsername());
-			JsonObject user = new JsonObject();
-			user.addProperty("username", userDetail.getUsername());
-			user.addProperty("email", userDetail.getUsername());
-			user.addProperty("roles", userDetail.getAuthorities().toString());
-
-			responseMessage = responseHandler.generateResponseMessage(user, requestContext.getRequestId());
+			User userEntity = userService.getUserByUsername(userDetail.getUsername());
+			userEntity.setPassword("");
+			responseMessage = responseHandler.generateResponseMessage(userEntity, requestContext.getRequestId());
 		} catch (Exception e) {
 			responseMessage = responseHandler.generateResponseMessage(e, requestContext.getRequestId());
 		}
@@ -69,6 +66,7 @@ public class UserController {
 
 			User user = gson.fromJson(jsonObject, User.class);
 			User updatedUser = userService.updateUser(getUsername(), user);
+			updatedUser.setPassword("");
 			responseMessage = responseHandler.generateResponseMessage(updatedUser, requestContext.getRequestId());
 		} catch (Exception e) {
 			responseMessage = responseHandler.generateResponseMessage(e, requestContext.getRequestId());

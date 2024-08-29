@@ -42,7 +42,7 @@ public class ResponseHandler {
 		ResponseMessage<?> responseMessage = null;
 
 		ErrorDetail errorDetail = new ErrorDetail(Objects.isNull(HttpStatus.INTERNAL_SERVER_ERROR.value()) ? -99
-				: HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getLocalizedMessage(), ex.getStackTrace());
+				: HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getLocalizedMessage(), ex.getStackTrace().toString());
 		Header header = new Header(source, target, requestId, new Date(), FAIL_CODE, FAIL_MESSAGE, errorDetail);
 		Body<?> body = new Body<>(null);
 
