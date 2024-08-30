@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cuonglv.learning_spring.data.Room;
-import com.cuonglv.learning_spring.repository.RoomReponsitory;
+import com.cuonglv.learning_spring.repository.RoomRepository;
 
 @Service
 public class RoomService {
     @Autowired
-    private RoomReponsitory productRepository;
+    private RoomRepository productRepository;
 
     public Room createRoom(Room product) {
         return productRepository.save(product);

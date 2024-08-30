@@ -17,7 +17,7 @@ import com.cuonglv.learning_spring.service.UserService;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+// @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
 	private final UserService userDetailsService;
@@ -30,16 +30,18 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		System.out.println("Vo day 3");
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
-						.requestMatchers("/api/user/**")
-						.hasRole("USER") // Yêu cầu quyền USER
+						.requestMatchers("/api/user/**", "/api/animal/**", "/api/crop/**", "/api/equipment/**",
+								"/api/project/**", "/api/suplier/**")
+						.hasRole("USER")
 						.requestMatchers("/api/admin/**", "/api/animal/**", "/api/crop/**", "/api/equipment/**",
 								"/api/project/**", "/api/suplier/**")
 						.hasRole("ADMIN") // Yêu cầu quyền ADMIN
 						.anyRequest().authenticated() // Các yêu cầu khác cần phải xác thực
 				).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+		System.out.println("Vo day 4");
 		// Thêm filter JwtRequestFilter để xử lý JWT cho mỗi request
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 

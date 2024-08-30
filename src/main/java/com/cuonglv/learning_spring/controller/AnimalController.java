@@ -1,7 +1,5 @@
 package com.cuonglv.learning_spring.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
 import com.cuonglv.learning_spring.context.RequestContext;
 import com.cuonglv.learning_spring.data.Animal;
 import com.cuonglv.learning_spring.service.AnimalService;
@@ -13,6 +11,7 @@ import com.google.gson.JsonObject;
 import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,8 +22,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/animal")
-
 public class AnimalController {
+
+    @Autowired
     AnimalService animalService;
     @Inject
     RequestContext requestContext;
@@ -38,7 +38,7 @@ public class AnimalController {
             System.out.println("Create animal");
             Animal animal = new Animal();
             animal.setName(GsonHelper.getAsString(req, "name"));
-            animal.setBirthDate(GsonHelper.getAsDate(req, "birthDate"));
+            // animal.setBirthDate(GsonHelper.getAsDate(req, "birthDate"));
             animal.setType(GsonHelper.getAsString(req, "type"));
             animal.setWeight(GsonHelper.getAsDouble(req, "weight"));
             animalService.createAnimal(animal);

@@ -50,6 +50,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 		if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 			jwt = authorizationHeader.substring(7);
+			System.out.println("Vo day");
 			try {
 				username = jwtUtil.extractUsername(jwt);
 			} catch (IllegalArgumentException e) {
@@ -97,6 +98,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			response.getWriter().write(new Gson().toJson(responseMessage));
 
 		} else {
+			System.out.println("Vo day 2");
 			chain.doFilter(request, response);
 		}
 	}

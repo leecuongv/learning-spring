@@ -2,16 +2,22 @@ package com.cuonglv.learning_spring.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import com.cuonglv.learning_spring.data.Animal;
+import com.cuonglv.learning_spring.repository.AnimalRepository;
 
+@Service
 public class AnimalService {
+    @Autowired
+    private AnimalRepository animalRepository;
     @Autowired
     private MongoTemplate mongoTemplate;
 
     public Animal createAnimal(Animal animal) {
-        mongoTemplate.save(animal);
+        System.out.println("Creating animal");
+        animalRepository.save(animal);
         return animal;
     }
 
