@@ -2,8 +2,8 @@ package com.cuonglv.learning_spring.data;
 
 import java.sql.Date;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
@@ -14,7 +14,7 @@ import lombok.Data;
 public class Species {
 
     @Id
-    private String id;
+    private ObjectId id;
     private String name;
     private String type;
     private String description;
@@ -26,8 +26,8 @@ public class Species {
     private Number weight;
     private Number price;
     private Number harvestTime;
+    private Number growthTime;
 
-    @DBRef
-    private Supplier suplier;
+    private ObjectId supplier;
 
 }

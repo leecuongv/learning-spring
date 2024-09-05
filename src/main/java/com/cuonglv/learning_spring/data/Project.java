@@ -1,5 +1,6 @@
 package com.cuonglv.learning_spring.data;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,12 +11,7 @@ import java.util.Date;
 @Data
 public class Project {
     @Id
-    private String id;
-    // create a class named Project with the following fields:
-    // name of type String
-    // type of type String
-    // startDate of type Date
-    // endDate of type Date
+    private ObjectId id;
     private String name;
     private String type;
     private Date startDate;
