@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.Set;
 
 @Data
-@Document(collection = "users")
+@Document
 public class User {
 	@Id
 	private ObjectId id;

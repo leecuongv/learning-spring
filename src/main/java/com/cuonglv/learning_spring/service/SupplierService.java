@@ -1,5 +1,6 @@
 package com.cuonglv.learning_spring.service;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -8,17 +9,17 @@ import com.cuonglv.learning_spring.data.Supplier;
 import java.util.List;
 
 @Service
-public class SuplierService {
+public class SupplierService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public Supplier createSupplier(Supplier supplier) {
+    public Supplier create(Supplier supplier) {
         mongoTemplate.save(supplier);
         return supplier;
     }
 
-    public boolean deleteSupplier(String id) {
+    public boolean delete(String id) {
         Supplier supplier = mongoTemplate.findById(id, Supplier.class);
         if (supplier == null) {
             return false;
@@ -27,7 +28,7 @@ public class SuplierService {
         return true;
     }
 
-    public Supplier updateSupplier(String id, Supplier updatedSupplier) {
+    public Supplier update(String id, Supplier updatedSupplier) {
         Supplier supplier = mongoTemplate.findById(id, Supplier.class);
         if (supplier == null) {
             throw new RuntimeException("Supplier not found");
@@ -36,15 +37,16 @@ public class SuplierService {
         supplier.setAddress(updatedSupplier.getAddress());
 
         supplier.setContactInfo(updatedSupplier.getContactInfo());
+        supplier.setNotes(updatedSupplier.getNotes());
         mongoTemplate.save(supplier);
         return supplier;
     }
 
-    public Supplier getSupplierById(String id) {
+    public Supplier getById(ObjectId id) {
         return mongoTemplate.findById(id, Supplier.class);
     }
 
-    public List<Supplier> getAllSuppliers() {
+    public List<Supplier> getAll() {
         return mongoTemplate.findAll(Supplier.class);
     }
 }
