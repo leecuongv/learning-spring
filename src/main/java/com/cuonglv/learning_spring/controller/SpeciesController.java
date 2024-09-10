@@ -1,9 +1,8 @@
 package com.cuonglv.learning_spring.controller;
 
 import com.cuonglv.learning_spring.context.RequestContext;
-import com.cuonglv.learning_spring.data.Animal;
 import com.cuonglv.learning_spring.data.Species;
-import com.cuonglv.learning_spring.service.AnimalService;
+import com.cuonglv.learning_spring.service.SpeciesService;
 import com.cuonglv.learning_spring.utility.helper.GsonHelper;
 import com.cuonglv.learning_spring.utility.helper.ObjectIdAdapter;
 import com.cuonglv.learning_spring.utility.model.msg.response.ResponseMessage;
@@ -27,11 +26,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
-@RequestMapping("/api/animal")
-public class AnimalController {
+@RequestMapping("/api/species")
+public class SpeciesController {
 
     @Autowired
-    AnimalService animalService;
+    SpeciesService speciesService;
     @Inject
     RequestContext requestContext;
 
@@ -43,9 +42,11 @@ public class AnimalController {
     @PostMapping
     public ResponseMessage<?> create(@RequestBody JsonObject req) throws Exception {
         try {
-            Animal animal = gson.fromJson(req, Animal.class);
-            animalService.create(animal);
-            return responseHandler.generateResponseMessage(animal, requestContext.getRequestId());
+            System.out.println("Create species");
+
+            Species species = gson.fromJson(req, Species.class);
+            speciesService.create(species);
+            return responseHandler.generateResponseMessage(species, requestContext.getRequestId());
         } catch (Exception e) {
             return responseHandler.generateResponseMessage(e, requestContext.getRequestId());
         }
@@ -54,15 +55,20 @@ public class AnimalController {
 
     @GetMapping
     public ResponseMessage<?> getAll() {
-        return responseHandler.generateResponseMessage(animalService.getAll(Animal.class),
-                requestContext.getRequestId());
+        try {
+            return responseHandler.generateResponseMessage(speciesService.getAll(Species.class),
+                    requestContext.getRequestId());
+        } catch (Exception e) {
+            return responseHandler.generateResponseMessage(e, requestContext.getRequestId());
+        }
+
     }
 
     @GetMapping("/{id}")
     public ResponseMessage<?> getById(@PathVariable String id) {
         try {
             ObjectId objectId = new ObjectId(id);
-            return responseHandler.generateResponseMessage(animalService.getById(objectId, Animal.class),
+            return responseHandler.generateResponseMessage(speciesService.getById(objectId, Species.class),
                     requestContext.getRequestId());
         } catch (Exception e) {
             return responseHandler.generateResponseMessage(e, requestContext.getRequestId());
@@ -74,7 +80,7 @@ public class AnimalController {
     public ResponseMessage<?> deleteById(@PathVariable String id) {
         try {
             ObjectId objectId = new ObjectId(id);
-            return responseHandler.generateResponseMessage(animalService.delete(objectId, Animal.class),
+            return responseHandler.generateResponseMessage(speciesService.delete(objectId, Species.class),
                     requestContext.getRequestId());
         } catch (Exception e) {
             return responseHandler.generateResponseMessage(e, requestContext.getRequestId());
@@ -85,9 +91,10 @@ public class AnimalController {
     @PutMapping("/{id}")
     public ResponseMessage<?> updateById(@PathVariable String id, @RequestBody JsonObject req) throws Exception {
         try {
-            Animal animal = gson.fromJson(req, Animal.class);
             ObjectId objectId = new ObjectId(id);
-            return responseHandler.generateResponseMessage(animalService.update(objectId, animal, Animal.class),
+            Species species = gson.fromJson(req, Species.class);
+
+            return responseHandler.generateResponseMessage(speciesService.update(objectId, species, Species.class),
                     requestContext.getRequestId());
         } catch (Exception e) {
             return responseHandler.generateResponseMessage(e, requestContext.getRequestId());

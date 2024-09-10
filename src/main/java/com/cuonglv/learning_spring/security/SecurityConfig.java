@@ -33,10 +33,12 @@ public class SecurityConfig {
 		System.out.println("Vo day 3");
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/api/auth/**", "/api/user/**", "/api/animal/**", "/api/crop/**").permitAll()
-						.requestMatchers("/api/user/**", "/api/equipment/**",
-								"/api/project/**", "/api/supplier/**")
-						.hasRole("USER")
+						.requestMatchers("/api/auth/**", "/api/user/**", "/api/animal/**", "/api/crop/**",
+								"/api/species/**")
+						.permitAll()
+						// .requestMatchers("/api/user/**", "/api/equipment/**",
+						// "/api/project/**", "/api/supplier/**")
+						// .hasRole("USER")
 						.requestMatchers("/api/admin/**", "/api/equipment/**",
 								"/api/project/**", "/api/supplier/**")
 						.hasRole("ADMIN") // Yêu cầu quyền ADMIN

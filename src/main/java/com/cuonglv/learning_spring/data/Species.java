@@ -1,10 +1,11 @@
 package com.cuonglv.learning_spring.data;
 
-import java.sql.Date;
+import java.util.Date;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import lombok.Data;
 
@@ -13,21 +14,23 @@ import lombok.Data;
 // Lớp giống cho cây trồng và vật nuôi
 public class Species {
 
-    @Id
-    private ObjectId id;
+    @MongoId(FieldType.OBJECT_ID)
+    private String id;
     private String name;
     private String type;
     private String description;
     private String status;
     private Date buyDate;
     private Date expireDate;
-    private Number productivity;
-    private Number density;
-    private Number weight;
-    private Number price;
-    private Number harvestTime;
-    private Number growthTime;
 
-    private ObjectId supplier;
+    private Double productivity;
+    private Double density;
+    private Float weight;
+    private Double price;
+    private Double harvestTime;
+    private Double growthTime;
+
+    // @MongoId(FieldType.OBJECT_ID)
+    private String supplier;
 
 }
