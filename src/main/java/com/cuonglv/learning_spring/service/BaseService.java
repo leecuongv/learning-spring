@@ -2,7 +2,6 @@ package com.cuonglv.learning_spring.service;
 
 import java.util.List;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -10,8 +9,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
-
-import com.cuonglv.learning_spring.data.Supplier;
 
 @Service
 public class BaseService {
@@ -68,6 +65,45 @@ public class BaseService {
 
     public <T> List<T> getAll(Class<T> clazz) {
         return mongoTemplate.findAll(clazz);
+    }
+
+    public <T> List<T> getAllByField(String fieldName, Object value, Class<T> clazz) {
+        Query query = new Query(Criteria.where(fieldName).is(value));
+        return mongoTemplate.find(query, clazz);
+    }
+
+    public <T> List<T> getAllByFields(String[] fieldNames, Object[] values, Class<T> clazz) {
+        Query query = new Query();
+        for (int i = 0; i < fieldNames.length; i++) {
+            query.addCriteria(Criteria.where(fieldNames[i]).is(values[i]));
+        }
+        return mongoTemplate.find(query, clazz);
+    }
+
+    public <T> List<T> getAllByFields(String[] fieldNames, Object[] values, String[] operators, Class<T> clazz) {
+        Query query = new Query();
+        for (int i = 0; i < fieldNames.length; i++) {
+            if (operators[i].equals("eq")) {
+                query.addCriteria(Criteria.where(fieldNames[i]).is(values[i]));
+            } else if (operators[i].equals("gt")) {
+                query.addCriteria(Criteria.where(fieldNames[i]).gt(values[i]));
+            } else if (operators[i].equals("lt")) {
+                query.addCriteria(Criteria.where(fieldNames[i]).lt(values[i]));
+            } else if (operators[i].equals("gte")) {
+                query.addCriteria(Criteria.where(fieldNames[i]).gte(values[i]));
+            } else if (operators[i].equals("lte")) {
+                query.addCriteria(Criteria.where(fieldNames[i]).lte(values[i]));
+            } else if (operators[i].equals("ne")) {
+                query.addCriteria(Criteria.where(fieldNames[i]).ne(values[i]));
+            } else if (operators[i].equals("in")) {
+                query.addCriteria(Criteria.where(fieldNames[i]).in(values[i]));
+            } else if (operators[i].equals("nin")) {
+                query.addCriteria(Criteria.where(fieldNames[i]).nin(values[i]));
+            } else if (operators[i].equals("regex")) {
+                query.addCriteria(Criteria.where(fieldNames[i]).regex((String) values[i]));
+            }
+        }
+        return mongoTemplate.find(query, clazz);
     }
 
 }

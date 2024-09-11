@@ -2,8 +2,10 @@ package com.cuonglv.learning_spring.controller;
 
 import javax.inject.Inject;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,8 +17,11 @@ import com.cuonglv.learning_spring.context.RequestContext;
 import com.cuonglv.learning_spring.data.Equipment;
 import com.cuonglv.learning_spring.service.EquipmentService;
 import com.cuonglv.learning_spring.utility.helper.GsonHelper;
+import com.cuonglv.learning_spring.utility.helper.ObjectIdAdapter;
 import com.cuonglv.learning_spring.utility.model.msg.response.ResponseMessage;
 import com.cuonglv.learning_spring.utility.response.handler.ResponseHandler;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 @RestController
@@ -28,47 +33,57 @@ public class EquipmentController {
     @Autowired
     ResponseHandler responseHandler;
 
+    @Autowired
     EquipmentService equipmentService;
+
+    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
+            .registerTypeAdapter(ObjectId.class, new ObjectIdAdapter()).create();
 
     @PostMapping
     public ResponseMessage<?> create(@RequestBody JsonObject req) throws Exception {
-        Equipment equipment = new Equipment();
-        equipment.setName(GsonHelper.getAsString(req, "name"));
-        equipment.setType(GsonHelper.getAsString(req, "type"));
-        equipment.setPurchaseDate(GsonHelper.getAsDate(req, "purchaseDate"));
-        equipment.setStatus(GsonHelper.getAsString(req, "status"));
-        equipment.setPrice(GsonHelper.getAsDouble(req, "price"));
-        equipment.setDescription(GsonHelper.getAsString(req, "description"));
-        equipmentService.createEquipment(equipment);
-        return responseHandler.generateResponseMessage(equipment, requestContext.getRequestId());
-
+        try {
+            Equipment equipment = gson.fromJson(req, Equipment.class);
+            equipmentService.create(equipment);
+            return responseHandler.generateResponseMessage(equipment, requestContext.getRequestId());
+        } catch (Exception e) {
+            return responseHandler.generateResponseMessage(e, requestContext.getRequestId());
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseMessage<?> updateEquipment(@RequestParam String id, @RequestBody JsonObject req) throws Exception {
 
-        Equipment equipment = new Equipment();
-        equipment.setName(GsonHelper.getAsString(req, "name"));
-        equipment.setType(GsonHelper.getAsString(req, "type"));
-        equipment.setPurchaseDate(GsonHelper.getAsDate(req, "purchaseDate"));
-        equipment.setStatus(GsonHelper.getAsString(req, "status"));
-        equipment.setPrice(GsonHelper.getAsDouble(req, "price"));
-        equipment.setDescription(GsonHelper.getAsString(req, "description"));
-
-        return responseHandler.generateResponseMessage(equipmentService.updateEquipment(id, equipment),
-                requestContext.getRequestId());
+        try {
+            ObjectId objectId = new ObjectId(id);
+            Equipment equipment = gson.fromJson(req, Equipment.class);
+            return responseHandler.generateResponseMessage(
+                    equipmentService.update(objectId, equipment, Equipment.class),
+                    requestContext.getRequestId());
+        } catch (Exception e) {
+            return responseHandler.generateResponseMessage(e, requestContext.getRequestId());
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseMessage<?> getById(@RequestParam String id) {
-        return responseHandler.generateResponseMessage(equipmentService.getEquipmentById(id),
-                requestContext.getRequestId());
+    public ResponseMessage<?> getById(@PathVariable String id) {
+
+        try {
+            ObjectId objectId = new ObjectId(id);
+            return responseHandler.generateResponseMessage(equipmentService.getById(objectId, Equipment.class),
+                    requestContext.getRequestId());
+        } catch (Exception e) {
+            return responseHandler.generateResponseMessage(e, requestContext.getRequestId());
+        }
     }
 
     @GetMapping
     public ResponseMessage<?> getAll() {
-        return responseHandler.generateResponseMessage(equipmentService.getAllEquipments(),
-                requestContext.getRequestId());
+        try {
+            return responseHandler.generateResponseMessage(equipmentService.getAll(Equipment.class),
+                    requestContext.getRequestId());
+        } catch (Exception e) {
+            return responseHandler.generateResponseMessage(e, requestContext.getRequestId());
+        }
     }
 
 }

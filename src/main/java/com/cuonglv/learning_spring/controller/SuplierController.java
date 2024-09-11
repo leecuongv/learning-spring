@@ -53,9 +53,10 @@ public class SuplierController {
     }
 
     @GetMapping("/{id}")
-    public ResponseMessage<?> getSupplierById(@PathVariable ObjectId id) {
+    public ResponseMessage<?> getSupplierById(@PathVariable String id) {
         try {
-            return responseHandler.generateResponseMessage(supplierService.getById(id),
+            ObjectId objectId = new ObjectId(id);
+            return responseHandler.generateResponseMessage(supplierService.getById(objectId, Supplier.class),
                     requestContext.getRequestId());
         } catch (Exception e) {
             return responseHandler.generateResponseMessage(e.getMessage(), requestContext.getRequestId());
@@ -66,7 +67,7 @@ public class SuplierController {
     @GetMapping
     public ResponseMessage<?> getAllSuppliers() {
         try {
-            return responseHandler.generateResponseMessage(supplierService.getAll(),
+            return responseHandler.generateResponseMessage(supplierService.getAll(Supplier.class),
                     requestContext.getRequestId());
         } catch (Exception e) {
             return responseHandler.generateResponseMessage(e.getMessage(), requestContext.getRequestId());
@@ -77,14 +78,14 @@ public class SuplierController {
     public ResponseMessage<?> updateSupplier(@PathVariable String id, @RequestBody JsonObject req) {
 
         try {
-
+            ObjectId objectId = new ObjectId(id);
             Supplier supplier = new Supplier();
             supplier.setName(GsonHelper.getAsString(req, "name"));
             supplier.setAddress(GsonHelper.getAsString(req, "address"));
             supplier.setContactInfo(GsonHelper.getAsString(req, "contactInfo"));
             supplier.setNotes(GsonHelper.getAsString(req, "notes"));
 
-            return responseHandler.generateResponseMessage(supplierService.update(id, supplier),
+            return responseHandler.generateResponseMessage(supplierService.update(objectId, supplier, Supplier.class),
                     requestContext.getRequestId());
         } catch (Exception e) {
             return responseHandler.generateResponseMessage(e.getMessage(), requestContext.getRequestId());
@@ -94,7 +95,8 @@ public class SuplierController {
     @DeleteMapping("/{id}")
     public ResponseMessage<?> deleteSupplier(@PathVariable String id) {
         try {
-            return responseHandler.generateResponseMessage(supplierService.delete(id),
+            ObjectId objectId = new ObjectId(id);
+            return responseHandler.generateResponseMessage(supplierService.delete(objectId, Supplier.class),
                     requestContext.getRequestId());
         } catch (Exception e) {
             return responseHandler.generateResponseMessage(e.getMessage(), requestContext.getRequestId());
