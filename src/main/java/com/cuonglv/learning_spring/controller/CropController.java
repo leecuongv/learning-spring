@@ -4,13 +4,16 @@ import javax.inject.Inject;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.service.annotation.DeleteExchange;
 
 import com.cuonglv.learning_spring.context.RequestContext;
 import com.cuonglv.learning_spring.data.Crop;
@@ -39,7 +42,7 @@ public class CropController {
             .registerTypeAdapter(ObjectId.class, new ObjectIdAdapter()).create();
 
     @PutMapping("/{id}")
-    public ResponseMessage<?> updateCrop(@RequestParam String id, @RequestBody JsonObject req) throws Exception {
+    public ResponseMessage<?> updateCrop(@PathVariable String id, @RequestBody JsonObject req) throws Exception {
 
         ObjectId objectId = new ObjectId(id);
         Crop crop = gson.fromJson(req, Crop.class);
@@ -57,7 +60,7 @@ public class CropController {
     }
 
     @GetMapping("/{id}")
-    public ResponseMessage<?> getById(@RequestParam String id) {
+    public ResponseMessage<?> getById(@PathVariable String id) {
         try {
             ObjectId objectId = new ObjectId(id);
             return responseHandler.generateResponseMessage(cropService.getById(objectId, Crop.class),
@@ -76,6 +79,18 @@ public class CropController {
         } catch (Exception e) {
             return responseHandler.generateResponseMessage(e, requestContext.getRequestId());
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseMessage<?> deleteCrop(@PathVariable String id) {
+        try {
+            ObjectId objectId = new ObjectId(id);
+            return responseHandler.generateResponseMessage(cropService.delete(objectId, Crop.class),
+                    requestContext.getRequestId());
+        } catch (Exception e) {
+            return responseHandler.generateResponseMessage(e, requestContext.getRequestId());
+        }
+
     }
 
 }

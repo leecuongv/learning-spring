@@ -18,7 +18,6 @@ public class Crop {
     private String name;
     private String type;
     private Date plantDate;
-    private double weight;
 
     private ObjectId species;
 

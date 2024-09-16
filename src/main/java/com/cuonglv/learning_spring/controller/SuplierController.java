@@ -46,7 +46,6 @@ public class SuplierController {
             supplierService.create(supplier);
             return responseHandler.generateResponseMessage(supplier, requestContext.getRequestId());
         } catch (Exception e) {
-            e.printStackTrace();
             return responseHandler.generateResponseMessage(e, requestContext.getRequestId());
         }
 
