@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import java.lang.reflect.Field;
 
 @Service
 public class BaseService {
@@ -17,7 +18,6 @@ public class BaseService {
     private MongoTemplate mongoTemplate;
 
     public <T> T create(T object) {
-        System.out.println("Creating object");
         mongoTemplate.insert(object);
         return object;
     }
@@ -36,13 +36,12 @@ public class BaseService {
         if (object == null) {
             throw new RuntimeException("Object not found");
         }
-        // Document filter = new Document("_id", id);
         Query query = new Query(Criteria.where("_id").is(id));
         System.out.println(query);
         Update update = new Update();
-        for (java.lang.reflect.Field iterable_element : clazz.getDeclaredFields()) {
+        for (Field iterable_element : clazz.getDeclaredFields()) {
             try {
-                iterable_element.setAccessible(true);
+                //iterable_element.setAccessible(true);
                 if (iterable_element.get(updatedObject) != null) {
                     update.set(iterable_element.getName(), iterable_element.get(updatedObject));
                 }

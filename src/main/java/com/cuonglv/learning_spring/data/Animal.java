@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Document
 @Data
-public class Animal {
+public class Animal{
     @MongoId(FieldType.OBJECT_ID)
     private String id;
     private String name;
