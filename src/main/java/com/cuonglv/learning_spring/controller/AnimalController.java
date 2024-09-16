@@ -2,9 +2,7 @@ package com.cuonglv.learning_spring.controller;
 
 import com.cuonglv.learning_spring.context.RequestContext;
 import com.cuonglv.learning_spring.data.Animal;
-import com.cuonglv.learning_spring.data.Species;
 import com.cuonglv.learning_spring.service.AnimalService;
-import com.cuonglv.learning_spring.utility.helper.GsonHelper;
 import com.cuonglv.learning_spring.utility.helper.ObjectIdAdapter;
 import com.cuonglv.learning_spring.utility.model.msg.response.ResponseMessage;
 import com.cuonglv.learning_spring.utility.response.handler.ResponseHandler;
@@ -18,7 +16,6 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

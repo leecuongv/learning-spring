@@ -5,7 +5,6 @@ import com.cuonglv.learning_spring.model.RegisterRequest;
 import com.cuonglv.learning_spring.repository.RoleRepository;
 import com.cuonglv.learning_spring.repository.UserRepository;
 import com.cuonglv.learning_spring.service.UserService;
-import com.cuonglv.learning_spring.utility.exception.ServiceException;
 import com.cuonglv.learning_spring.utility.model.msg.response.ResponseMessage;
 import com.cuonglv.learning_spring.utility.response.handler.ResponseHandler;
 import com.google.gson.JsonObject;
