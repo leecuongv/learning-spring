@@ -24,7 +24,7 @@ import com.google.gson.JsonObject;
 
 @RestController
 @RequestMapping("/api/suppliers")
-public class SuplierController {
+public class SupplierController {
     @Inject
     RequestContext requestContext;
 
