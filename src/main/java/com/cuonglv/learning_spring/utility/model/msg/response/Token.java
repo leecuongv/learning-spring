@@ -1,7 +1,7 @@
 package com.cuonglv.learning_spring.utility.model.msg.response;
 
 public class Token {
-	private String token;
+	public String token;
 
 	public Token() {
 	}

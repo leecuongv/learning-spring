@@ -11,5 +11,5 @@ import java.util.List;
 @Service
 public class ProjectService extends BaseService {
     @Autowired
-    private MongoTemplate mongoTemplate;
+    public MongoTemplate mongoTemplate;
 }

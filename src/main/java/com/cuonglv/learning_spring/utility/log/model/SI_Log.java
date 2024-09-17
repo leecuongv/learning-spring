@@ -10,41 +10,41 @@ import com.google.gson.annotations.Expose;
 public class SI_Log {
 
 	@Expose
-	private String serviceName;
+	public String serviceName;
 	@Expose
-	private ProcessInfo processInfo;
+	public ProcessInfo processInfo;
 	@Expose
-	private String caseId;
+	public String caseId;
 	@Expose
-	private String caseIdRef;
+	public String caseIdRef;
 	@Expose
-	private String bpmInput;
+	public String bpmInput;
 	@Expose
-	private String bpmOutput;
+	public String bpmOutput;
 	@Expose
-	private String siInput;
+	public String siInput;
 	@Expose
-	private String siOutput;
+	public String siOutput;
 	@Expose
-	private String errorCode;
+	public String errorCode;
 	@Expose
-	private String errorMessage;
+	public String errorMessage;
 	@Expose
-	private String stacktrace;
+	public String stacktrace;
 	@Expose
-	private String logCode;
+	public String logCode;
 	@Expose
-	private String parentCode;
+	public String parentCode;
 	@Expose
-	private String logId;
+	public String logId;
 	@Expose
-	private String startTime;
+	public String startTime;
 	@Expose
-	private String finishTime;
+	public String finishTime;
 	@Expose
-	private String caller;
+	public String caller;
 	@Expose
-	private String targetSystem;
+	public String targetSystem;
 
 	public SI_Log() {
 		this.logCode = UUID.randomUUID().toString();

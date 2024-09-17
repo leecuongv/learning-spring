@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class ProcedureCalling2 {
-	private String procName;
-	private String params;
-	private String dataSourceName;
+	public String procName;
+	public String params;
+	public String dataSourceName;
 
 	public ProcedureCalling2(String procName, String params, String dataSourceName) {
 		this.procName = procName;

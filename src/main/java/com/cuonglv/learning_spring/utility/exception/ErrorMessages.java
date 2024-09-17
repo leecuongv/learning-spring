@@ -5,9 +5,9 @@ public enum ErrorMessages {
 	MISSING_REQUIRED_FIELD("Giá trị input không hợp lệ"), AUTHENTICATION_FAILED("Authentication failed"),
 	NO_RECORD_FOUND("Record with provided id is not found");
 
-	private String errorMessage;
+	public String errorMessage;
 
-	private ErrorMessages(String errorMessage) {
+	public ErrorMessages(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
 

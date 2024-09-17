@@ -31,22 +31,22 @@ import javax.inject.Inject;
 public class AuthController {
 
 	@Autowired
-	private AuthenticationManager authenticationManager;
+	public AuthenticationManager authenticationManager;
 
 	@Autowired
-	private UserService userDetailsService;
+	public UserService userDetailsService;
 
 	@Autowired
-	private UserRepository userRepository;
+	public UserRepository userRepository;
 
 	@Autowired
-	private RoleRepository roleRepository;
+	public RoleRepository roleRepository;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	public PasswordEncoder passwordEncoder;
 
 	@Autowired
-	private JwtUtil jwtUtil;
+	public JwtUtil jwtUtil;
 
 	@Inject
 	RequestContext requestContext;

@@ -12,6 +12,6 @@ import lombok.Data;
 @Document
 public class Role {
 	@MongoId(FieldType.OBJECT_ID)
-	private String id;
-	private String name;
+	public String id;
+	public String name;
 }

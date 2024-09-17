@@ -13,11 +13,11 @@ import java.util.Date;
 @Data
 public class Equipment {
     @MongoId(FieldType.OBJECT_ID)
-    private String id;
-    private String name;
-    private String type;
-    private Date purchaseDate;
-    private double price;
-    private String status;
-    private String description;
+    public String id;
+    public String name;
+    public String type;
+    public Date purchaseDate;
+    public double price;
+    public String status;
+    public String description;
 }

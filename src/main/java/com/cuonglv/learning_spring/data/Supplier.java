@@ -10,9 +10,9 @@ import lombok.Data;
 @Document
 public class Supplier {
     @MongoId(FieldType.OBJECT_ID)
-    private String id;
-    private String name;
-    private String contactInfo;
-    private String address;
-    private String notes;
+    public String id;
+    public String name;
+    public String contactInfo;
+    public String address;
+    public String notes;
 }

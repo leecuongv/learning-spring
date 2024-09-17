@@ -20,8 +20,8 @@ import com.cuonglv.learning_spring.service.UserService;
 // @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-	private final UserService userDetailsService;
-	private final JwtRequestFilter jwtRequestFilter;
+	public final UserService userDetailsService;
+	public final JwtRequestFilter jwtRequestFilter;
 
 	public SecurityConfig(UserService userDetailsService, JwtRequestFilter jwtRequestFilter) {
 		this.userDetailsService = userDetailsService;

@@ -6,13 +6,13 @@ import com.cuonglv.learning_spring.utility.exception.ErrorDetail;
 
 public class Header {
 
-	private String source;
-	private String target;
-	private String requestId;
-	private Date timestamp;
-	private int status;
-	private String message;
-	private ErrorDetail errorDetail;
+	public String source;
+	public String target;
+	public String requestId;
+	public Date timestamp;
+	public int status;
+	public String message;
+	public ErrorDetail errorDetail;
 
 	public Header() {
 	}

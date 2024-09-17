@@ -29,12 +29,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserController {
 
 	@Autowired
-	private UserDetailsService userDetailsService;
+	public UserDetailsService userDetailsService;
 
 	@Autowired
-	private UserService userService;
+	public UserService userService;
 	@Autowired
-	private JwtUtil jwtUtil;
+	public JwtUtil jwtUtil;
 	@Inject
 	RequestContext requestContext;
 

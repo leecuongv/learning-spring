@@ -10,6 +10,6 @@ import com.cuonglv.learning_spring.data.Animal;
 @Service
 public class AnimalService extends BaseService {
     @Autowired
-    private MongoTemplate mongoTemplate;
+    public MongoTemplate mongoTemplate;
 
 }

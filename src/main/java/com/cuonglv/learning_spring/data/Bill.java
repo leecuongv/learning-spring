@@ -14,13 +14,13 @@ import java.util.Date;
 public class Bill {
 
 	@MongoId(FieldType.OBJECT_ID)
-	private String billId;
-	private String creatorId;
-	private Double amount;
-	private String status;
-	private String description;
-	private String method;
-	private String transactionId;
-	private Date createdAt;
-	private Date updatedAt;
+	public String billId;
+	public String creatorId;
+	public Double amount;
+	public String status;
+	public String description;
+	public String method;
+	public String transactionId;
+	public Date createdAt;
+	public Date updatedAt;
 }

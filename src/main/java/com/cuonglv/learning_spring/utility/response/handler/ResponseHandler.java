@@ -15,14 +15,14 @@ import com.cuonglv.learning_spring.utility.model.msg.response.ResponseMessage;
 @Component
 public class ResponseHandler {
 
-	private String source = "LearningSpring";
+	public String source = "LearningSpring";
 
-	private String target = "LearningSpring";
+	public String target = "LearningSpring";
 
-	private static final int SUCCESS_CODE = 0;
-	private static final int FAIL_CODE = 1;
-	private static final String SUCCESS_MESSAGE = "Thực thi thành công";
-	private static final String FAIL_MESSAGE = "Thực thi không thành công";
+	public static final int SUCCESS_CODE = 0;
+	public static final int FAIL_CODE = 1;
+	public static final String SUCCESS_MESSAGE = "Thực thi thành công";
+	public static final String FAIL_MESSAGE = "Thực thi không thành công";
 
 	public ResponseMessage<?> generateResponseMessage(Object data, String requestId) {
 

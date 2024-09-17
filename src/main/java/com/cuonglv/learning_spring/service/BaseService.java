@@ -1,5 +1,6 @@
 package com.cuonglv.learning_spring.service;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -9,13 +10,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
-import java.lang.reflect.Field;
 
 @Service
 public class BaseService {
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    public MongoTemplate mongoTemplate;
 
     public <T> T create(T object) {
         mongoTemplate.insert(object);
@@ -41,7 +41,7 @@ public class BaseService {
         Update update = new Update();
         for (Field iterable_element : clazz.getDeclaredFields()) {
             try {
-                //iterable_element.setAccessible(true);
+                // iterable_element.setAccessible(true);
                 if (iterable_element.get(updatedObject) != null) {
                     update.set(iterable_element.getName(), iterable_element.get(updatedObject));
                 }

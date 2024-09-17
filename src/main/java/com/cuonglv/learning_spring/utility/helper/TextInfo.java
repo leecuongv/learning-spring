@@ -20,12 +20,12 @@ public class TextInfo {
 	public static final String RIGHT = "right";
 	public static final String CENTER = "center";
 
-	private String text;
-	private float x;
-	private float y;
-	private float height;
-	private float width;
-	private int page;
+	public String text;
+	public float x;
+	public float y;
+	public float height;
+	public float width;
+	public int page;
 
 	public TextInfo(String text, float x, float y, float height, float width, int page) {
 		super();
@@ -116,7 +116,7 @@ public class TextInfo {
 
 	}
 
-	private static List<TextInfo> findPositionsInPage(List<TextInfo> position, String text, int page) {
+	public static List<TextInfo> findPositionsInPage(List<TextInfo> position, String text, int page) {
 		List<TextInfo> positions = new ArrayList<>();
 		for (TextInfo pos : position) {
 			pos.page = page;
