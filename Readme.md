@@ -27,10 +27,9 @@ Dự án tập trung vào việc xử lý các thao tác cơ bản cho một tra
 
 ## Mô tả hệ thống
 ### Chủ trang trại: 
-- Quản lý được nhiều trang trại cùng một lúc
 - Quản lý, lên kế hoạch, phân công công việc theo ngày, tuần, tháng
-- Quản lý được số lượng cá thể trong đàn: Số lượng nhập chuồng, xuất chuồng, số lượng heo con,… tránh tình trạng lạc, mất
-- Thống kê, chọn và lai tạo giống, từ đó dự đoán được sản lượng thế hệ, lứa tiếp theo
+- Quản lý được số lượng cá thể trong đàn, số lượng cây trong vùng trồng
+- Thống kê
 - Ghi lại nhật ký chăn nuôi: Ngày đẻ, ngày nhập/xuất chuồng, thức ăn, vaccine, thuốc uống đã sử dụng…
 ### Công nhân: 
 - Dễ dàng theo dõi và thực hiện công việc theo kế hoạch từng ngày, tuần, tháng; linh động thay đổi, sắp xếp công việc.
@@ -40,5 +39,4 @@ Dự án tập trung vào việc xử lý các thao tác cơ bản cho một tra
 ### Quản trị viên
 - Quản lý người dùng trên hệ thống.
 - Quản lý quyền hạn người dùng trên hệ thống.
-- Quản lý các khoá học.
 - Quản lý và thống kê doanh thu.
