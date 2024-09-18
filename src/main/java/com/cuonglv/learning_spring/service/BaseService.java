@@ -46,7 +46,7 @@ public class BaseService {
                     update.set(iterable_element.getName(), iterable_element.get(updatedObject));
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Error when update object");
             }
         }
         System.out.println(update);

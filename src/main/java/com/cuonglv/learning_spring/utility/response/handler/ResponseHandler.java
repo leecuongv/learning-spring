@@ -47,8 +47,6 @@ public class ResponseHandler {
 		Body<?> body = new Body<>(null);
 
 		responseMessage = new ResponseMessage<>(header, body);
-
-		ex.printStackTrace();
 		return responseMessage;
 	}
 
