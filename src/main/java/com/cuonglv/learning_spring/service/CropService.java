@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class CropService extends BaseService {
     @Autowired
-    public MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
 }

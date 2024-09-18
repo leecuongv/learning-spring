@@ -30,7 +30,6 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		System.out.println("Vo day 3");
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/api/auth/**", "/api/user/**", "/api/animal/**", "/api/crop/**",
@@ -41,10 +40,9 @@ public class SecurityConfig {
 						// .hasRole("USER")
 						.requestMatchers("/api/admin/**", "/api/equipment/**",
 								"/api/project/**", "/api/supplier/**")
-						.hasRole("ADMIN") // Yêu cầu quyền ADMIN
+						.hasRole("ADMIN")
 						.anyRequest().authenticated() // Các yêu cầu khác cần phải xác thực
 				).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		System.out.println("Vo day 4");
 		// Thêm filter JwtRequestFilter để xử lý JWT cho mỗi request
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 

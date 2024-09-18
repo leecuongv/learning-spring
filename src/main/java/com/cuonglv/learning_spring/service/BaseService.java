@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class BaseService {
 
     @Autowired
-    public MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
 
     public <T> T create(T object) {
         mongoTemplate.insert(object);
