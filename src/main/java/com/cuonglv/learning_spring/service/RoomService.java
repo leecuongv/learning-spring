@@ -12,7 +12,7 @@ import com.cuonglv.learning_spring.repository.RoomRepository;
 @Service
 public class RoomService {
     @Autowired
-    private RoomRepository productRepository;
+    public RoomRepository productRepository;
 
     public Room createRoom(Room product) {
         return productRepository.save(product);

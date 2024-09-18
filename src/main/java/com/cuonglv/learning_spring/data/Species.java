@@ -15,22 +15,22 @@ import lombok.Data;
 public class Species {
 
     @MongoId(FieldType.OBJECT_ID)
-    private String id;
-    private String name;
-    private String type;
-    private String description;
-    private String status;
-    private Date buyDate;
-    private Date expireDate;
+    public String id;
+    public String name;
+    public String type;
+    public String description;
+    public String status;
+    public Date buyDate;
+    public Date expireDate;
 
-    private Double productivity;
-    private Double density;
-    private Float weight;
-    private Double price;
-    private Double harvestTime;
-    private Double growthTime;
+    public Double productivity;
+    public Double density;
+    public Float weight;
+    public Double price;
+    public Double harvestTime;
+    public Double growthTime;
 
     // @MongoId(FieldType.OBJECT_ID)
-    private String supplier;
+    public String supplier;
 
 }

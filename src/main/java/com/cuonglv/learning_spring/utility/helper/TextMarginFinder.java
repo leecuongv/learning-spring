@@ -15,7 +15,7 @@ import com.itextpdf.kernel.pdf.canvas.parser.listener.IEventListener;
 public class TextMarginFinder implements IEventListener {
 	List<TextInfo> lstP = new ArrayList<TextInfo>();
 
-	private void renderText(TextRenderInfo renderInfo) {
+	public void renderText(TextRenderInfo renderInfo) {
 		if (renderInfo.getText().trim().length() == 0)
 			return;
 		LineSegment ascent = renderInfo.getAscentLine();

@@ -13,8 +13,8 @@ import lombok.Data;
 @Data
 public class RequestContext {
 
-	private String requestId;
-	private Object boby;
-	private String service;
-	private SI_Log siLog;
+	public String requestId;
+	public Object boby;
+	public String service;
+	public SI_Log siLog;
 }

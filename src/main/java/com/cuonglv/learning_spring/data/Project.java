@@ -13,14 +13,14 @@ import java.util.Date;
 @Data
 public class Project {
     @MongoId(FieldType.OBJECT_ID)
-    private String id;
-    private String name;
-    private String type;
-    private Date startDate;
-    private Date endDate;
-    private String status;
-    private String description;
-    private String manager;
-    private String department;
+    public String id;
+    public String name;
+    public String type;
+    public Date startDate;
+    public Date endDate;
+    public String status;
+    public String description;
+    public String manager;
+    public String department;
 
 }

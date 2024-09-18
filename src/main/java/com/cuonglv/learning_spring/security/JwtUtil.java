@@ -17,8 +17,8 @@ import java.util.function.Function;
 public class JwtUtil {
 
 	@Value("${jwt.secret}")
-	private String secret;
-	private final Key key;
+	public String secret;
+	public final Key key;
 
 	public JwtUtil() {
 		// Tạo khóa bí mật sử dụng thuật toán HS256
@@ -38,11 +38,11 @@ public class JwtUtil {
 		return claimsResolver.apply(claims);
 	}
 
-	private Claims extractAllClaims(String token) throws Exception {
+	public Claims extractAllClaims(String token) throws Exception {
 		return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 	}
 
-	private Boolean isTokenExpired(String token) throws Exception {
+	public Boolean isTokenExpired(String token) throws Exception {
 		return extractExpiration(token).before(new Date());
 	}
 

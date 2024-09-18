@@ -11,9 +11,9 @@ import lombok.Data;
 @Data
 public class Room {
 	@MongoId(FieldType.OBJECT_ID)
-	private String id;
-	private String name;
-	private String roomNumber;
-	private String bedInfo;
+	public String id;
+	public String name;
+	public String roomNumber;
+	public String bedInfo;
 
 }

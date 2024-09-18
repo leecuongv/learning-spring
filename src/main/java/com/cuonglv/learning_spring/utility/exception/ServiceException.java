@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 
 public class ServiceException extends RuntimeException {
 
-	private static final long serialVersionUID = 119309485697175808L;
-	private HttpStatus httpStatus;
+	public static final long serialVersionUID = 119309485697175808L;
+	public HttpStatus httpStatus;
 
 	public ServiceException() {
 		super();

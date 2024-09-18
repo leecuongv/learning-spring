@@ -29,10 +29,10 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private UserService userDetailsService;
+	public UserService userDetailsService;
 
 	@Autowired
-	private JwtUtil jwtUtil;
+	public JwtUtil jwtUtil;
 
 	@Autowired
 	ResponseHandler responseHandler;

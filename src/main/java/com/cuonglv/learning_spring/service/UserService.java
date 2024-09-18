@@ -15,9 +15,9 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 
 	@Autowired
-	private UserRepository userRepository;
+	public UserRepository userRepository;
 	@Autowired
-	private MongoTemplate mongoTemplate;
+	public MongoTemplate mongoTemplate;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

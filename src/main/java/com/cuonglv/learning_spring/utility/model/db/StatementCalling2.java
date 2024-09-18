@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class StatementCalling2 {
 
-	private String sql;
-	private String params;
-	private String dataSourceName;
+	public String sql;
+	public String params;
+	public String dataSourceName;
 
 	public StatementCalling2(String sql, String params, String dataSourceName) {
 		super();

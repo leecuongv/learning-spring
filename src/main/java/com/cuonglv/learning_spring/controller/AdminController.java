@@ -26,12 +26,12 @@ import com.google.gson.JsonObject;
 @RequestMapping("/api/admin")
 public class AdminController {
     @Autowired
-    private UserDetailsService userDetailsService;
+    public UserDetailsService userDetailsService;
 
     @Autowired
-    private UserService userService;
+    public UserService userService;
     @Autowired
-    private JwtUtil jwtUtil;
+    public JwtUtil jwtUtil;
     @Inject
     RequestContext requestContext;
 

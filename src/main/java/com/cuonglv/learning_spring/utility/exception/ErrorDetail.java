@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class ErrorDetail {
 
-	private int errorCode;
-	private String errorMessage;
-	private Object stackTrace;
+	public int errorCode;
+	public String errorMessage;
+	public Object stackTrace;
 
 	public ErrorDetail() {
 	}

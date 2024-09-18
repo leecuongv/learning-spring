@@ -17,5 +17,5 @@ import java.util.List;
 public class SupplierService extends BaseService {
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    public MongoTemplate mongoTemplate;
 }

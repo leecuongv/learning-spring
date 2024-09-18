@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class ProcedureCalling {
-	private String procName;
-	private String params;
+	public String procName;
+	public String params;
 
 	public ProcedureCalling(String procName, String params) {
 		super();

@@ -2,8 +2,8 @@ package com.cuonglv.learning_spring.utility.model.msg.response;
 
 public class ResponseMessage<T> {
 
-	private Header header;
-	private Body<T> body;
+	public Header header;
+	public Body<T> body;
 
 	public ResponseMessage() {
 	}
